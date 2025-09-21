@@ -25,16 +25,19 @@ def home():
 @app.route("/.well-known/jwks.json")
 def jwks():
     """Return the active JWKS (non-expired keys only)."""
+    # Delegate to key_store to filter expired keys automatically
     return jsonify(key_store.get_jwks())
 
 
 @app.route("/auth", methods=["POST"])
 def auth():
     """Return a signed JWT. If ?expired=1, return an expired token."""
+    # Check query params: issue expired token if requested
     use_expired = "expired" in request.args
     token = key_store.issue_jwt(use_expired=use_expired)
     return jsonify({"token": token})
 
 
 if __name__ == "__main__":
+    # Run Flask dev server on port 8080
     app.run(port=8080)
