@@ -18,13 +18,16 @@ class KeyStore:
 
     def _make_rsa_key(self, ttl_seconds: int, start_offset: int = 0) -> dict:
         """Generate an RSA keypair with a kid and not_after expiry time."""
+        # Create private + public keypair
         private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         public_key = private_key.public_key()
-
+        
+        # Assign a unique key ID (kid) and set validity window
         kid = str(uuid.uuid4())
         now = int(time.time()) + start_offset
         not_after = now + ttl_seconds
 
+        # Serialize public key for JWKS publishing
         pub_pem = public_key.public_bytes(
             encoding=serialization.Encoding.PEM,
             format=serialization.PublicFormat.SubjectPublicKeyInfo,
@@ -39,7 +42,9 @@ class KeyStore:
 
     def init_keys(self) -> None:
         """Initialize with one active key and one already expired key."""
+        # Expired key: expired 10 minutes ago
         expired_key = self._make_rsa_key(5 * MINUTE, start_offset=-(15 * MINUTE))
+        # Active key: valid for 1 hour
         active_key = self._make_rsa_key(60 * MINUTE)
         self.keys = [expired_key, active_key]
 
@@ -77,13 +82,15 @@ class KeyStore:
         active_keys = [k for k in self.keys if k["not_after"] > now]
         expired_keys = [k for k in self.keys if k["not_after"] <= now]
 
+        # Pick key depending on expired flag
         if use_expired and expired_keys:
-            slot = expired_keys[-1]
-            exp = now - 30
+            slot = expired_keys[-1]    # most recent expired
+            exp = now - 30             # expires in 5 minutes
         else:
-            slot = active_keys[-1]
-            exp = now + 5 * MINUTE
+            slot = active_keys[-1]    # most recent active
+            exp = now + 5 * MINUTE    # expires in 5 minutes
 
+        # Sign a JWT with chosen key
         token = jwt.encode(
             {
                 "sub": "mock-user-123",
