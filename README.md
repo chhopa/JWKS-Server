@@ -52,7 +52,6 @@ jwks-server/
 1. Clone this repository:
    ```bash
    git clone https://github.com/chhopa/JWKS-Server.git
-   cd jwks-flask
 
 2. Create and activate a virtual environment:
     ```bash
