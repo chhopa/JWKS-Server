@@ -28,21 +28,22 @@ The implementation uses **Python 3, Flask, and PyJWT**, and follows best practic
 
 ---
 
-# Project Structure
 
-jwks-flask/
+# Project Structure
+```
+jwks-server/
 ├── app.py
 ├── key_store.py
 ├── pytest.ini
 ├── requirements.txt
 ├── README.md
+├── LICENSE
 ├── tests/
 │   ├── test_auth.py
 │   └── test_jwks.py
-├── screenshots/
-│   ├── test_client.png
-│   └── test_suite.png
-└── .gitignore
+├── Test Client Screenshot.png
+├── Test Suite Screenshot.png
+```
 
 ---
 
@@ -50,7 +51,7 @@ jwks-flask/
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/chhopa/jwks-flask.git
+   git clone https://github.com/chhopa/JWKS-Server.git
    cd jwks-flask
 
 2. Create and activate a virtual environment:
