@@ -32,17 +32,19 @@ The implementation uses **Python 3, Flask, and PyJWT**, and follows best practic
 # Project Structure
 ```
 jwks-server/
+├── Test Screenshots/
+│   ├── Test Client Screenshot.png
+│   └── Test Suite Screenshot.png
+├── tests/
+│   ├── test_auth.py
+│   └── test_jwks.py
+├── LICENSE
+├── README.md
 ├── app.py
 ├── key_store.py
 ├── pytest.ini
 ├── requirements.txt
-├── README.md
-├── LICENSE
-├── tests/
-│   ├── test_auth.py
-│   └── test_jwks.py
-├── Test Client Screenshot.png
-├── Test Suite Screenshot.png
+
 ```
 
 ---
